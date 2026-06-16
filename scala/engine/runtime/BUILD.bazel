@@ -1,0 +1,14 @@
+load("@rules_scala//scala:scala.bzl", "scala_library")
+
+package(default_visibility = ["//visibility:public"])
+
+scala_library(
+    name = "runtime",
+    srcs = ["ExecutionRuntime.scala"],
+    deps = [
+        "//scala/analysis/planner:planner",
+        "//scala/common/codec:codec",
+        "//scala/common/time:time",
+        "//scala/domain/events:events",
+    ],
+)

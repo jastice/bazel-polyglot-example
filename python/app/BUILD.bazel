@@ -1,0 +1,12 @@
+load("@aspect_rules_py//py:defs.bzl", "py_binary")
+
+py_binary(
+    name = "main",
+    srcs = ["main.py"],
+    deps = [
+        "//python/services/calculator:engine",
+        "//python/services/analyzer:text_analyzer",
+        "//python/libs/datastructs:collections",
+    ],
+    visibility = ["//visibility:public"],
+)

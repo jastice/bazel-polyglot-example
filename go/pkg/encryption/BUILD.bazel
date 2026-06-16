@@ -1,0 +1,18 @@
+load("@rules_go//go:def.bzl", "go_library", "go_test")
+
+go_library(
+    name = "encryption",
+    srcs = [
+        "cipher.go",
+        "key_generator.go",
+    ],
+    importpath = "bazel_polyglot_example/go/pkg/encryption",
+    visibility = ["//visibility:public"],
+    deps = ["//go/pkg/mathutil"],
+)
+
+go_test(
+    name = "encryption_test",
+    srcs = ["cipher_test.go"],
+    embed = [":encryption"],
+)

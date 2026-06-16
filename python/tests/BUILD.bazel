@@ -1,0 +1,43 @@
+load("@aspect_rules_py//py:defs.bzl", "py_test")
+
+py_test(
+    name = "test_mathutils",
+    srcs = ["test_mathutils.py"],
+    deps = [
+        "//python/libs/mathutils:operations",
+        "//python/libs/mathutils:stats",
+    ],
+)
+
+py_test(
+    name = "test_stringutils",
+    srcs = ["test_stringutils.py"],
+    deps = [
+        "//python/libs/stringutils:transforms",
+        "//python/libs/stringutils:validators",
+    ],
+)
+
+py_test(
+    name = "test_datastructs",
+    srcs = ["test_datastructs.py"],
+    deps = [
+        "//python/libs/datastructs:collections",
+    ],
+)
+
+py_test(
+    name = "test_calculator",
+    srcs = ["test_calculator.py"],
+    deps = [
+        "//python/services/calculator:engine",
+    ],
+)
+
+py_test(
+    name = "test_analyzer",
+    srcs = ["test_analyzer.py"],
+    deps = [
+        "//python/services/analyzer:text_analyzer",
+    ],
+)

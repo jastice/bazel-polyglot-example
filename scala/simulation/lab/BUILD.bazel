@@ -1,0 +1,17 @@
+load("@rules_scala//scala:scala.bzl", "scala_library")
+
+package(default_visibility = ["//visibility:public"])
+
+scala_library(
+    name = "lab",
+    srcs = ["ScenarioLab.scala"],
+    deps = [
+        "//scala/analysis/graph:graph",
+        "//scala/analysis/planner:planner",
+        "//scala/common/time:time",
+        "//scala/domain/contracts:contracts",
+        "//scala/domain/events:events",
+        "//scala/engine/runtime:runtime",
+        "//scala/engine/scheduler:scheduler",
+    ],
+)

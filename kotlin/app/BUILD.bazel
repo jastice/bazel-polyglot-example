@@ -1,0 +1,13 @@
+load("@rules_kotlin//kotlin:jvm.bzl", "kt_jvm_binary")
+
+kt_jvm_binary(
+    name = "app",
+    srcs = glob(["src/main/kotlin/**/*.kt"]),
+    main_class = "com.example.app.MainKt",
+    visibility = ["//visibility:public"],
+    deps = [
+        "//kotlin/core",
+        "//kotlin/math",
+        "//kotlin/utils",
+    ],
+)

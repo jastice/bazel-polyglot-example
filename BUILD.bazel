@@ -1,0 +1,2 @@
+# Root BUILD file for polyglot Bazel example
+# Languages: Go, Scala, Python, Kotlin

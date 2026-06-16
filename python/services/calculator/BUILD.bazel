@@ -1,0 +1,20 @@
+load("@aspect_rules_py//py:defs.bzl", "py_library")
+
+py_library(
+    name = "engine",
+    srcs = ["engine.py"],
+    deps = [
+        "//python/libs/mathutils:operations",
+        "//python/libs/mathutils:stats",
+        "//python/libs/formatting:formatters",
+        "//python/libs/datastructs:collections",
+    ],
+    visibility = ["//visibility:public"],
+)
+
+py_library(
+    name = "calculator",
+    srcs = ["__init__.py"],
+    deps = [":engine"],
+    visibility = ["//visibility:public"],
+)

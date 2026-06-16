@@ -1,0 +1,12 @@
+load("@rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "database",
+    srcs = ["db.go", "models.go"],
+    importpath = "bazel_polyglot_example/go/pkg/database",
+    visibility = ["//visibility:public"],
+    deps = [
+        "//go/pkg/encryption",
+        "//go/pkg/mathutil",
+    ],
+)

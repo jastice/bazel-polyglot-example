@@ -1,0 +1,24 @@
+load("@rules_go//go:def.bzl", "go_binary", "go_library", "go_test")
+
+go_library(
+    name = "order_service_lib",
+    srcs = ["main.go"],
+    importpath = "bazel_polyglot_example/go/cmd/order_service",
+    visibility = ["//visibility:private"],
+    deps = [
+        "//go/pkg/database",
+        "//go/pkg/mathutil",
+    ],
+)
+
+go_binary(
+    name = "order_service",
+    embed = [":order_service_lib"],
+    visibility = ["//visibility:public"],
+)
+
+go_test(
+    name = "order_service_test",
+    srcs = ["main_test.go"],
+    embed = [":order_service_lib"],
+)

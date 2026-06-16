@@ -1,0 +1,20 @@
+load("@aspect_rules_py//py:defs.bzl", "py_library")
+
+py_library(
+    name = "text_analyzer",
+    srcs = ["text_analyzer.py"],
+    deps = [
+        "//python/libs/stringutils:transforms",
+        "//python/libs/stringutils:validators",
+        "//python/libs/datastructs:collections",
+        "//python/libs/formatting:formatters",
+    ],
+    visibility = ["//visibility:public"],
+)
+
+py_library(
+    name = "analyzer",
+    srcs = ["__init__.py"],
+    deps = [":text_analyzer"],
+    visibility = ["//visibility:public"],
+)

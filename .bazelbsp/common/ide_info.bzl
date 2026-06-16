@@ -1,0 +1,83 @@
+load(":artifact_location.bzl", "artifact_location")
+load(":common.bzl", "intellij_common")
+load(":make_variables.bzl", "expand_make_variables")
+# Copyright 2026 JetBrains s.r.o.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#    http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+
+def _target_hash(key):
+    """Creates a unique hash for the target based on its key."""
+    parts = [key.label, getattr(key, "configuration", "")] + key.aspect_ids
+    return hash(".".join(parts))
+
+def _write_info(target, ctx, key, fields):
+    """
+    Collects some common information in addition to the provided fields and
+    writes everything to an intellij-info.txt file.
+    """
+
+    build_file_location = artifact_location.create(
+        root_path = ctx.label.workspace_root,
+        relative_path = ctx.label.package + "/BUILD" if ctx.label.package else "BUILD",
+        is_source = True,
+        is_external = intellij_common.label_is_external(ctx.label),
+    )
+
+    files_to_run = target[DefaultInfo].files_to_run or struct()
+
+    # Make executeable_info a struct if and only if files_to_run.executable is present and not None.
+    # This will ensure the correct signal when observing the presence of the executable_info message.
+    executable_info = intellij_common.struct(
+        executable_file = artifact_location.from_file(files_to_run.executable),
+        runfiles_manifest = artifact_location.from_file(getattr(files_to_run, "runfiles_manifest", None)),
+    ) if getattr(files_to_run, "executable", None) != None else None
+
+    info = fields | {
+        "build_file_artifact_location": build_file_location,
+        "features": ctx.features,
+        "kind": ctx.rule.kind,
+        "tags": ctx.rule.attr.tags,
+        "key": key,
+        "workspace_name": ctx.workspace_name,
+        "generator_name": getattr(ctx.rule.attr, "generator_name", ""),
+        "testonly": getattr(ctx.rule.attr, "testonly", False),
+        "executable_info": executable_info,
+        "env_inherit": getattr(ctx.rule.attr, "env_inherit", []),
+        "env": {
+            k: "".join(expand_make_variables(ctx, False, [v]))
+            for k, v in getattr(ctx.rule.attr, "env", {}).items()
+        },
+        "srcs": artifact_location.from_attr(ctx, "srcs"),
+    }
+
+    # bazel allows target names differing only by case, so append a hash to support case-insensitive file systems
+    file_name = "%s-%s.intellij-info.txt" % (target.label.name, _target_hash(key))
+
+    file = ctx.actions.declare_file(file_name)
+    ctx.actions.write(file, proto.encode_text(struct(**info)))
+
+    return file
+
+def _write_toolchain_info(target, ctx, name, info):
+    """Convenience wrapper around write ide info for toolchains."""
+
+    # for toolchains it should be fine to simply use the aspects from the current context
+    key = intellij_common.target_key(target, ctx, ctx.aspect_ids)
+
+    return _write_info(target, ctx, key, {name: info})
+
+ide_info = struct(
+    write = _write_info,
+    write_toolchain = _write_toolchain_info,
+)

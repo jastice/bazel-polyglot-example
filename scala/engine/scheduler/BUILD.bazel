@@ -1,0 +1,22 @@
+load("@rules_scala//scala:scala.bzl", "scala_binary", "scala_library")
+
+package(default_visibility = ["//visibility:public"])
+
+scala_library(
+    name = "scheduler",
+    srcs = ["Scheduler.scala"],
+    deps = [
+        "//scala/analysis/graph:graph",
+        "//scala/analysis/planner:planner",
+        "//scala/common/time:time",
+        "//scala/domain/events:events",
+        "//scala/engine/runtime:runtime",
+    ],
+)
+
+scala_binary(
+    name = "scheduler_probe",
+    srcs = ["SchedulerProbe.scala"],
+    main_class = "nebula.engine.scheduler.SchedulerProbe",
+    deps = [":scheduler"],
+)

@@ -1,0 +1,12 @@
+load("@rules_scala//scala:scala.bzl", "scala_library")
+
+package(default_visibility = ["//visibility:public"])
+
+scala_library(
+    name = "contracts",
+    srcs = ["ServiceContract.scala"],
+    deps = [
+        "//scala/common/codec:codec",
+        "//scala/common/time:time",
+    ],
+)

@@ -1,0 +1,18 @@
+load("@aspect_rules_py//py:defs.bzl", "py_library")
+
+py_library(
+    name = "formatters",
+    srcs = ["formatters.py"],
+    deps = [
+        "//python/libs/stringutils:transforms",
+        "//python/libs/datastructs:collections",
+    ],
+    visibility = ["//visibility:public"],
+)
+
+py_library(
+    name = "formatting",
+    srcs = ["__init__.py"],
+    deps = [":formatters"],
+    visibility = ["//visibility:public"],
+)

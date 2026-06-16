@@ -1,0 +1,23 @@
+load("@aspect_rules_py//py:defs.bzl", "py_library")
+
+py_library(
+    name = "transforms",
+    srcs = ["transforms.py"],
+    visibility = ["//visibility:public"],
+)
+
+py_library(
+    name = "validators",
+    srcs = ["validators.py"],
+    visibility = ["//visibility:public"],
+)
+
+py_library(
+    name = "stringutils",
+    srcs = ["__init__.py"],
+    deps = [
+        ":transforms",
+        ":validators",
+    ],
+    visibility = ["//visibility:public"],
+)

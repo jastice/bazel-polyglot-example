@@ -1,0 +1,17 @@
+load("@rules_scala//scala:scala.bzl", "scala_binary")
+
+package(default_visibility = ["//visibility:public"])
+
+scala_binary(
+    name = "console",
+    srcs = ["Main.scala"],
+    main_class = "nebula.apps.console.Main",
+    deps = [
+        "//scala/analysis/graph:graph",
+        "//scala/analysis/planner:planner",
+        "//scala/domain/contracts:contracts",
+        "//scala/domain/events:events",
+        "//scala/engine/scheduler:scheduler",
+        "//scala/simulation/lab:lab",
+    ],
+)

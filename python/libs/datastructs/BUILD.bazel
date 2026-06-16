@@ -1,0 +1,18 @@
+load("@aspect_rules_py//py:defs.bzl", "py_library")
+
+py_library(
+    name = "collections",
+    srcs = ["collections.py"],
+    deps = [
+        "//python/libs/mathutils:operations",
+        "//python/libs/mathutils:stats",
+    ],
+    visibility = ["//visibility:public"],
+)
+
+py_library(
+    name = "datastructs",
+    srcs = ["__init__.py"],
+    deps = [":collections"],
+    visibility = ["//visibility:public"],
+)
