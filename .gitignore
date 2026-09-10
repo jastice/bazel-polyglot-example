@@ -1,3 +1,6 @@
+.bazel/
+.bazelbsp/
+.idea/
 bazel-*
 *.pyc
 __pycache__
